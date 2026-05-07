@@ -3,7 +3,7 @@ using System.Drawing;
 
 namespace PictureBoxy
 {
-    internal class Square
+    internal class Square : IFigure
     {
         private float x;
         private float y;

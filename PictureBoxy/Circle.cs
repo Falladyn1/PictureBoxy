@@ -3,7 +3,7 @@ using System.Drawing;
 
 namespace PictureBoxy
 {
-    internal class Circle
+    internal class Circle : IFigure
     {
         private float x;
         private float y;
