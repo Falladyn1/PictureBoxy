@@ -38,37 +38,49 @@ namespace PictureBoxy
                 //boxes.Add(new Square(rnd.Next(0, 300), rnd.Next(0, 300), rnd.Next(20, 50), rnd.Next(1, 5), rnd.Next(1, 5)));
             }
 
-            figures.Add(new Explosion(explosionFrames, 150, 150));
+            // W Form1.cs zamiast starej logiki:
+            figures.Add(new Explosion("wybuch.png", 150, 150));
 
             timer1.Start();
         }
 
-        private Bitmap[] PrepareAnimationFrames(string filepath)
+        private Bitmap[] PrepareAnimationFrames(string filepath, int rows = 2, int cols = 4)
         {
             try
             {
-                Bitmap[] frames = new Bitmap[8];
-                using (Bitmap spriteSheet = new Bitmap(Image.FromFile(filepath)))
+                if (!System.IO.File.Exists(filepath))
                 {
-                    int frameWidth = spriteSheet.Width / 4;
-                    int frameHeight = spriteSheet.Height / 2;
+                    throw new System.IO.FileNotFoundException("Nie znaleziono pliku graficznego.");
+                }
+
+                Bitmap[] frames = new Bitmap[rows * cols];
+
+                // Wczytujemy orygina³ i tworzymy kopiê, aby nie blokowaæ pliku na dysku
+                using (Bitmap spriteSheet = new Bitmap(filepath))
+                {
+                    int frameWidth = spriteSheet.Width / cols;
+                    int frameHeight = spriteSheet.Height / rows;
                     int frameIndex = 0;
 
-                    for (int row = 0; row < 2; row++)
+                    for (int row = 0; row < rows; row++)
                     {
-                        for (int col = 0; col < 4; col++)
+                        for (int col = 0; col < cols; col++)
                         {
                             Rectangle cropArea = new Rectangle(col * frameWidth, row * frameHeight, frameWidth, frameHeight);
-                            frames[frameIndex] = spriteSheet.Clone(cropArea, spriteSheet.PixelFormat);
+
+                            // Klonujemy fragment arkusza. 
+                            // Format32bppPArgb jest najszybszy do renderowania w GDI+
+                            frames[frameIndex] = spriteSheet.Clone(cropArea, System.Drawing.Imaging.PixelFormat.Format32bppPArgb);
+
                             frameIndex++;
                         }
                     }
-                    return frames;
                 }
+                return frames;
             }
             catch (Exception ex)
             {
-                MessageBox.Show("B³¹d ³adowania grafiki: " + ex.Message);
+                MessageBox.Show($"B³¹d podczas przygotowywania animacji: {ex.Message}");
                 return new Bitmap[0];
             }
         }
