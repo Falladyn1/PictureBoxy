@@ -17,7 +17,7 @@ namespace PictureBoxy
 
         public void Draw(Graphics g)
         {
-            if (frames != null && frames.Length > 0)
+            if (frames != null && frames.Length > 0 && currentFrame < frames.Length)
             {
                 g.DrawImage(frames[currentFrame], x, y);
             }
@@ -25,7 +25,10 @@ namespace PictureBoxy
 
         public void Update(int width, int height)
         {
+            if (frames == null || frames.Length == 0) return;
+
             currentFrame++;
+            
             if (currentFrame >= frames.Length)
             {
                 currentFrame = 0;

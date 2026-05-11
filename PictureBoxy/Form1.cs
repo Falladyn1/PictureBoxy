@@ -18,6 +18,10 @@ namespace PictureBoxy
         {
             InitializeComponent();
 
+            // Dodanie DoubleBuffered zapobiega migotaniu PictureBox
+            this.DoubleBuffered = true;
+
+            // Upewnij siê, ¿e plik wybuch.jpg jest w folderze z plikiem .exe
             Bitmap[] explosionFrames = PrepareAnimationFrames("wybuch.jpg");
 
             for (int i = 0; i < 100; i++)
@@ -34,7 +38,6 @@ namespace PictureBoxy
                 //boxes.Add(new Square(rnd.Next(0, 300), rnd.Next(0, 300), rnd.Next(20, 50), rnd.Next(1, 5), rnd.Next(1, 5)));
             }
 
-
             figures.Add(new Explosion(explosionFrames, 150, 150));
 
             timer1.Start();
@@ -42,25 +45,32 @@ namespace PictureBoxy
 
         private Bitmap[] PrepareAnimationFrames(string filepath)
         {
-            Bitmap[] frames = new Bitmap[8];
-            Bitmap spriteSheet = new Bitmap(Image.FromFile(filepath));
-
-            int frameWidth = spriteSheet.Width / 4;
-            int frameHeight = spriteSheet.Height / 2;
-            int frameIndex = 0;
-
-            for (int row = 0; row < 2; row++)
+            try
             {
-                for (int col = 0; col < 4; col++)
+                Bitmap[] frames = new Bitmap[8];
+                using (Bitmap spriteSheet = new Bitmap(Image.FromFile(filepath)))
                 {
-                    Rectangle cropArea = new Rectangle(col * frameWidth, row * frameHeight, frameWidth, frameHeight);
-                    frames[frameIndex] = spriteSheet.Clone(cropArea, spriteSheet.PixelFormat);
-                    frameIndex++;
+                    int frameWidth = spriteSheet.Width / 4;
+                    int frameHeight = spriteSheet.Height / 2;
+                    int frameIndex = 0;
+
+                    for (int row = 0; row < 2; row++)
+                    {
+                        for (int col = 0; col < 4; col++)
+                        {
+                            Rectangle cropArea = new Rectangle(col * frameWidth, row * frameHeight, frameWidth, frameHeight);
+                            frames[frameIndex] = spriteSheet.Clone(cropArea, spriteSheet.PixelFormat);
+                            frameIndex++;
+                        }
+                    }
+                    return frames;
                 }
             }
-
-            spriteSheet.Dispose();
-            return frames;
+            catch (Exception ex)
+            {
+                MessageBox.Show("B³¹d ³adowania grafiki: " + ex.Message);
+                return new Bitmap[0];
+            }
         }
 
         private void pictureBox1_Paint(object sender, PaintEventArgs e)
