@@ -15,7 +15,7 @@ namespace PictureBoxy
 
         public bool IsFinished { get; private set; } = false;
 
-        public Explosion(string filepath, int x, int y, int rows = 2, int cols = 4)
+        public Explosion(string filepath, int x, int y, int rows , int cols)
         {
             this.x = x;
             this.y = y;
@@ -26,6 +26,7 @@ namespace PictureBoxy
         {
             try
             {
+                // Wczytujemy oryginał
                 using (Bitmap spriteSheet = new Bitmap(filepath))
                 {
                     Bitmap[] animationFrames = new Bitmap[rows * cols];
@@ -38,7 +39,15 @@ namespace PictureBoxy
                         for (int col = 0; col < cols; col++)
                         {
                             Rectangle cropArea = new Rectangle(col * frameWidth, row * frameHeight, frameWidth, frameHeight);
-                            animationFrames[index] = spriteSheet.Clone(cropArea, PixelFormat.Format32bppPArgb);
+
+                            // Klonujemy fragment
+                            Bitmap frame = spriteSheet.Clone(cropArea, PixelFormat.Format32bppPArgb);
+
+                            // WYMUSZENIE PRZEZROCZYSTOŚCI: 
+                            // Jeśli tło jest idealnie białe, ta linia je usunie:
+                            frame.MakeTransparent(Color.White);
+
+                            animationFrames[index] = frame;
                             index++;
                         }
                     }
@@ -53,7 +62,11 @@ namespace PictureBoxy
             if (frames != null && currentFrame < frames.Length)
             {
                 Bitmap img = frames[currentFrame];
-                g.DrawImage(img, x - (img.Width / 2), y - (img.Height / 2));
+
+                float centerX = x - (img.Width / 2f);
+                float centerY = y - (img.Height / 2f);
+
+                g.DrawImage(img, centerX, centerY);
             }
         }
 

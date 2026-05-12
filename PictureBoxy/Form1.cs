@@ -34,7 +34,7 @@ namespace PictureBoxy
 
         private void PictureBox1_MouseClick(object sender, MouseEventArgs e)
         {
-            figures.Add(new Explosion("wybuch.png", e.X, e.Y));
+            figures.Add(new Explosion("wybuch.png", e.X, e.Y, 2, 4));
         }
 
         private void pictureBox1_Paint(object sender, PaintEventArgs e)
