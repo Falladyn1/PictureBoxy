@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PictureBoxy
 {
@@ -12,28 +8,27 @@ namespace PictureBoxy
     {
         private Bitmap[] frames;
         private int currentFrame = 0;
-        public int X { get; set; }
-        public int Y { get; set; }
+        private int x, y;
 
-        // Nowy konstruktor przyjmujący ścieżkę do pliku
+        private int frameDelayCounter = 0;
+        private readonly int ticksPerFrame = 5; 
+
+        public bool IsFinished { get; private set; } = false;
+
         public Explosion(string filepath, int x, int y, int rows = 2, int cols = 4)
         {
-            this.X = x;
-            this.Y = y;
-            this.frames = PrepareAnimationFrames(filepath, rows, cols);
+            this.x = x;
+            this.y = y;
+            this.frames = LoadFrames(filepath, rows, cols);
         }
 
-        // Metoda przeniesiona do wnętrza klasy
-        private Bitmap[] PrepareAnimationFrames(string filepath, int rows, int cols)
+        private Bitmap[] LoadFrames(string filepath, int rows, int cols)
         {
             try
             {
-                if (!System.IO.File.Exists(filepath)) return new Bitmap[0];
-
-                Bitmap[] animationFrames = new Bitmap[rows * cols];
-
                 using (Bitmap spriteSheet = new Bitmap(filepath))
                 {
+                    Bitmap[] animationFrames = new Bitmap[rows * cols];
                     int frameWidth = spriteSheet.Width / cols;
                     int frameHeight = spriteSheet.Height / rows;
                     int index = 0;
@@ -43,38 +38,40 @@ namespace PictureBoxy
                         for (int col = 0; col < cols; col++)
                         {
                             Rectangle cropArea = new Rectangle(col * frameWidth, row * frameHeight, frameWidth, frameHeight);
-                            // Używamy formatu 32bppPArgb dla zachowania przezroczystości (PNG) i wydajności
                             animationFrames[index] = spriteSheet.Clone(cropArea, PixelFormat.Format32bppPArgb);
                             index++;
                         }
                     }
+                    return animationFrames;
                 }
-                return animationFrames;
             }
-            catch
-            {
-                return new Bitmap[0];
-            }
+            catch { return new Bitmap[0]; }
         }
 
         public void Draw(Graphics g)
         {
-            if (frames == null || frames.Length == 0) return;
-
-            // Rysujemy klatkę wyśrodkowaną na punkcie X, Y
-            Bitmap img = frames[currentFrame];
-            g.DrawImage(img, X - img.Width / 2, Y - img.Height / 2);
+            if (frames != null && currentFrame < frames.Length)
+            {
+                Bitmap img = frames[currentFrame];
+                g.DrawImage(img, x - (img.Width / 2), y - (img.Height / 2));
+            }
         }
 
         public void Update(int width, int height)
         {
-            if (frames == null || frames.Length == 0) return;
+            if (frames == null || IsFinished) return;
 
-            // Zmiana klatki na następną
-            currentFrame++;
-            if (currentFrame >= frames.Length)
+            frameDelayCounter++;
+
+            if (frameDelayCounter >= ticksPerFrame)
             {
-                currentFrame = 0; // Zapętlenie (można tu też dodać flagę do usuwania obiektu)
+                frameDelayCounter = 0;
+                currentFrame++;
+
+                if (currentFrame >= frames.Length)
+                {
+                    IsFinished = true;
+                }
             }
         }
     }

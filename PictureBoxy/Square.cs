@@ -13,6 +13,7 @@ namespace PictureBoxy
         private Color color;
         private static Random rnd = new Random();
 
+        public bool IsFinished => false;
         public Square(float startX, float startY, float startSize, float startVX, float startVY)
         {
             x = startX;

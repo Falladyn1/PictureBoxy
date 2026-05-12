@@ -10,6 +10,7 @@ namespace PictureBoxy
     {
         void Update(int width, int height);
         void Draw(Graphics g);
+        bool IsFinished { get; }
 
     }
 }
