@@ -26,7 +26,6 @@ namespace PictureBoxy
         {
             try
             {
-                // Wczytujemy oryginał
                 using (Bitmap spriteSheet = new Bitmap(filepath))
                 {
                     Bitmap[] animationFrames = new Bitmap[rows * cols];
@@ -40,11 +39,8 @@ namespace PictureBoxy
                         {
                             Rectangle cropArea = new Rectangle(col * frameWidth, row * frameHeight, frameWidth, frameHeight);
 
-                            // Klonujemy fragment
                             Bitmap frame = spriteSheet.Clone(cropArea, PixelFormat.Format32bppPArgb);
 
-                            // WYMUSZENIE PRZEZROCZYSTOŚCI: 
-                            // Jeśli tło jest idealnie białe, ta linia je usunie:
                             frame.MakeTransparent(Color.White);
 
                             animationFrames[index] = frame;
