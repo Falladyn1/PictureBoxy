@@ -22,6 +22,12 @@ namespace PictureBoxy
 
         public bool IsFinished => false;
 
+        [JsonConstructor]
+        public Circle()
+        {
+            color = Color.FromArgb(rnd.Next(256), rnd.Next(256), rnd.Next(256));
+        }
+
         public Circle(float startX, float startY, float startSize, float startVX, float startVY)
         {
             x = startX;
@@ -29,7 +35,6 @@ namespace PictureBoxy
             size = startSize;
             vx = startVX;
             vy = startVY;
-            color = Color.FromArgb(rnd.Next(256), rnd.Next(256), rnd.Next(256));
         }
 
         public void Update(int width, int height)

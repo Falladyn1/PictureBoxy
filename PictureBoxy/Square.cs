@@ -21,6 +21,13 @@ namespace PictureBoxy
         private static Random rnd = new Random();
 
         public bool IsFinished => false;
+
+        [JsonConstructor]
+        public Square()
+        {
+            color = Color.FromArgb(rnd.Next(256), rnd.Next(256), rnd.Next(256));
+        }
+
         public Square(float startX, float startY, float startSize, float startVX, float startVY)
         {
             x = startX;
@@ -28,7 +35,6 @@ namespace PictureBoxy
             size = startSize;
             vx = startVX;
             vy = startVY;
-            color = Color.FromArgb(rnd.Next(256), rnd.Next(256), rnd.Next(256));
         }
 
         public void Update(int width, int height)

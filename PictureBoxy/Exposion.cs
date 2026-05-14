@@ -1,19 +1,33 @@
 ﻿using System;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Text.Json.Serialization;
 
 namespace PictureBoxy
 {
     public class Explosion : IFigure
     {
+        [JsonInclude]
+        private int x;
+        [JsonInclude]
+        private int y;
+        [JsonInclude]
+        private string filepath;
+        [JsonInclude]
+        private int rows;
+        [JsonInclude]
+        private int cols;
+
         private Bitmap[] frames;
         private int currentFrame = 0;
-        private int x, y;
-
         private int frameDelayCounter = 0;
-        private readonly int ticksPerFrame = 5; 
+        private readonly int ticksPerFrame = 5;
 
         public bool IsFinished { get; private set; } = false;
+
+        [JsonConstructor]
+        public Explosion() {}
+
 
         public Explosion(string filepath, int x, int y, int rows , int cols)
         {
