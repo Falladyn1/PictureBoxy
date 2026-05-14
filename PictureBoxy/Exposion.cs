@@ -35,7 +35,6 @@ namespace PictureBoxy
             this.y = y;
             this.frames = LoadFrames(filepath, rows, cols);
         }
-
         private Bitmap[] LoadFrames(string filepath, int rows, int cols)
         {
             try

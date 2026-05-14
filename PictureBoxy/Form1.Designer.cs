@@ -31,15 +31,15 @@
             components = new System.ComponentModel.Container();
             pictureBox1 = new PictureBox();
             timer1 = new System.Windows.Forms.Timer(components);
+            btnStop = new Button();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
             // pictureBox1
             // 
-            pictureBox1.Dock = DockStyle.Fill;
             pictureBox1.Location = new Point(0, 0);
             pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(800, 450);
+            pictureBox1.Size = new Size(800, 398);
             pictureBox1.TabIndex = 0;
             pictureBox1.TabStop = false;
             pictureBox1.Paint += pictureBox1_Paint;
@@ -49,11 +49,22 @@
             timer1.Interval = 10;
             timer1.Tick += timer1_Tick;
             // 
+            // btnStop
+            // 
+            btnStop.Location = new Point(26, 409);
+            btnStop.Name = "btnStop";
+            btnStop.Size = new Size(94, 29);
+            btnStop.TabIndex = 1;
+            btnStop.Text = "Zatrzymaj";
+            btnStop.UseVisualStyleBackColor = true;
+            btnStop.Click += btnStop_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(btnStop);
             Controls.Add(pictureBox1);
             Name = "Form1";
             Text = "Form1";
@@ -65,5 +76,6 @@
 
         private PictureBox pictureBox1;
         private System.Windows.Forms.Timer timer1;
+        private Button btnStop;
     }
 }

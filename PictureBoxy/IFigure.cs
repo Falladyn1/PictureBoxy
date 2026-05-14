@@ -12,6 +12,7 @@ namespace PictureBoxy
     [JsonPolymorphic(TypeDiscriminatorPropertyName = "$type")]
     [JsonDerivedType(typeof(Square), "squares")]
     [JsonDerivedType(typeof(Circle), "circles")]
+    [JsonDerivedType(typeof(Explosion), "explosions")]
 
     internal interface IFigure
     {

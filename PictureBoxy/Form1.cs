@@ -70,5 +70,10 @@ namespace PictureBoxy
 
             pictureBox1.Refresh();
         }
+
+        private void btnStop_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
