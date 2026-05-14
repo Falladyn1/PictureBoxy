@@ -24,16 +24,12 @@ namespace PictureBoxy
         private int blue;
 
 
-        private Color color;
         private static Random rnd = new Random();
 
         public bool IsFinished => false;
 
         [JsonConstructor]
-        public Square()
-        {
-            color = Color.FromArgb(red, green, blue);
-        }
+        public Square() { }
 
         public Square(float startX, float startY, float startSize, float startVX, float startVY,int r, int g, int b)
         {
@@ -45,7 +41,6 @@ namespace PictureBoxy
             red = r;
             green = g;
             blue = b;
-            color = Color.FromArgb(r, g, b);
         }
 
         public void Update(int width, int height)
@@ -59,7 +54,7 @@ namespace PictureBoxy
 
         public void Draw(Graphics g)
         {
-            using (Pen pn = new Pen(color, 2))
+            using (Pen pn = new Pen(Color.FromArgb(red, green, blue), 2))
             {
                 g.DrawRectangle(pn, x, y, size, size);
             }
