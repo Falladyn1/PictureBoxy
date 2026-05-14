@@ -32,6 +32,8 @@
             pictureBox1 = new PictureBox();
             timer1 = new System.Windows.Forms.Timer(components);
             btnStop = new Button();
+            btnSave = new Button();
+            btnLoad = new Button();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
@@ -59,11 +61,33 @@
             btnStop.UseVisualStyleBackColor = true;
             btnStop.Click += btnStop_Click;
             // 
+            // btnSave
+            // 
+            btnSave.Location = new Point(192, 409);
+            btnSave.Name = "btnSave";
+            btnSave.Size = new Size(94, 29);
+            btnSave.TabIndex = 2;
+            btnSave.Text = "Zapisz";
+            btnSave.UseVisualStyleBackColor = true;
+            btnSave.Click += btnSave_Click;
+            // 
+            // btnLoad
+            // 
+            btnLoad.Location = new Point(442, 409);
+            btnLoad.Name = "btnLoad";
+            btnLoad.Size = new Size(94, 29);
+            btnLoad.TabIndex = 3;
+            btnLoad.Text = "Wczytaj";
+            btnLoad.UseVisualStyleBackColor = true;
+            btnLoad.Click += btnLoad_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(btnLoad);
+            Controls.Add(btnSave);
             Controls.Add(btnStop);
             Controls.Add(pictureBox1);
             Name = "Form1";
@@ -77,5 +101,7 @@
         private PictureBox pictureBox1;
         private System.Windows.Forms.Timer timer1;
         private Button btnStop;
+        private Button btnSave;
+        private Button btnLoad;
     }
 }

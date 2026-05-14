@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Text.Json;
 using System.Windows.Forms;
+using static System.Windows.Forms.Design.AxImporter;
 
 namespace PictureBoxy
 {
@@ -10,6 +11,13 @@ namespace PictureBoxy
     {
         List<IFigure> figures = new List<IFigure>();
         Random rnd = new Random();
+        bool isPaused = false;
+
+        private JsonSerializerOptions options = new JsonSerializerOptions
+        {
+            IncludeFields = true,
+            WriteIndented = true
+        };
 
         public Form1()
         {
@@ -31,12 +39,6 @@ namespace PictureBoxy
             this.pictureBox1.MouseClick += PictureBox1_MouseClick;
 
             timer1.Start();
-
-            var options = new JsonSerializerOptions
-            {
-                IncludeFields = true,
-                WriteIndented = true
-            };
 
             string json = JsonSerializer.Serialize(figures, options);
             Console.WriteLine(json);
@@ -73,7 +75,25 @@ namespace PictureBoxy
 
         private void btnStop_Click(object sender, EventArgs e)
         {
+            isPaused = !isPaused;
+            timer1.Enabled = isPaused;
+            btnStop.Text = isPaused ? "Wznów" : "Zatrzymaj";
+        }
 
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            string json = JsonSerializer.Serialize(figures, options);
+            File.WriteAllText("stan.json", json);
+        }
+
+        private void btnLoad_Click(object sender, EventArgs e)
+        {
+            if (File.Exists("stan.json"))
+            {
+                string json = File.ReadAllText("stan.json");
+                figures = JsonSerializer.Deserialize<List<IFigure>>(json, options);
+                pictureBox1.Refresh();
+            }
         }
     }
 }
