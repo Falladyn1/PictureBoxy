@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Text.Json;
 using System.Windows.Forms;
 
 namespace PictureBoxy
@@ -30,6 +31,16 @@ namespace PictureBoxy
             this.pictureBox1.MouseClick += PictureBox1_MouseClick;
 
             timer1.Start();
+
+            var options = new JsonSerializerOptions
+            {
+                IncludeFields = true,
+                WriteIndented = true
+            };
+
+            string json = JsonSerializer.Serialize(figures, options);
+            Console.WriteLine(json);
+            List<IFigure> figures2 = JsonSerializer.Deserialize<List<IFigure>>(json);
         }
 
         private void PictureBox1_MouseClick(object sender, MouseEventArgs e)

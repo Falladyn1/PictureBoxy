@@ -1,15 +1,22 @@
 ﻿using System;
 using System.Drawing;
+using System.Text.Json.Serialization;
 
 namespace PictureBoxy
 {
     internal class Circle : IFigure
     {
+        [JsonInclude]
         private float x;
+        [JsonInclude]
         private float y;
+        [JsonInclude]
         private float size;
+        [JsonInclude]
         private float vx;
+        [JsonInclude]
         private float vy;
+
         private Color color;
         private static Random rnd = new Random();
 
