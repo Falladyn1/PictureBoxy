@@ -28,11 +28,13 @@ namespace PictureBoxy
             {
                 if (i % 2 == 0)
                 {
-                    figures.Add(new Circle(rnd.Next(0, 300), rnd.Next(0, 300), rnd.Next(20, 50), rnd.Next(1, 5), rnd.Next(1, 5)));
+                    figures.Add(new Circle(rnd.Next(0, 300), rnd.Next(0, 300), rnd.Next(20, 50), rnd.Next(1, 5), rnd.Next(1, 5), 
+                        rnd.Next(0,255), rnd.Next(0, 255), rnd.Next(0, 255)));
                 }
                 else
                 {
-                    figures.Add(new Square(rnd.Next(0, 300), rnd.Next(0, 300), rnd.Next(20, 50), rnd.Next(1, 5), rnd.Next(1, 5)));
+                    figures.Add(new Square(rnd.Next(0, 300), rnd.Next(0, 300), rnd.Next(20, 50), rnd.Next(1, 5), rnd.Next(1, 5),
+                        rnd.Next(0, 255), rnd.Next(0, 255), rnd.Next(0, 255)));
                 }
             }
 
@@ -76,7 +78,7 @@ namespace PictureBoxy
         private void btnStop_Click(object sender, EventArgs e)
         {
             isPaused = !isPaused;
-            timer1.Enabled = isPaused;
+            timer1.Enabled = !isPaused;
             btnStop.Text = isPaused ? "Wznów" : "Zatrzymaj";
         }
 
