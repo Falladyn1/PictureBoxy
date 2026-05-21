@@ -84,18 +84,35 @@ namespace PictureBoxy
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            string json = JsonSerializer.Serialize(figures, options);
-            File.WriteAllText("stan.json", json);
+            Serialization serializer = new Serialization();
+
+            foreach (IFigure f in figures)
+            {
+                serializer.Save(f);
+            }
+            MessageBox.Show("Zapisano do pliku zapis.txt");
+
         }
+
+        //private void btnSave_Click(object sender, EventArgs e)
+        //{
+        //    string json = JsonSerializer.Serialize(figures, options);
+        //    File.WriteAllText("stan.json", json);
+        //}
 
         private void btnLoad_Click(object sender, EventArgs e)
         {
-            if (File.Exists("stan.json"))
-            {
-                string json = File.ReadAllText("stan.json");
-                figures = JsonSerializer.Deserialize<List<IFigure>>(json, options);
-                pictureBox1.Refresh();
-            }
+
         }
+
+        //private void btnLoad_Click(object sender, EventArgs e)
+        //{
+        //    if (File.Exists("stan.json"))
+        //    {
+        //        string json = File.ReadAllText("stan.json");
+        //        figures = JsonSerializer.Deserialize<List<IFigure>>(json, options);
+        //        pictureBox1.Refresh();
+        //    }
+        //}
     }
 }

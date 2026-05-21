@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Drawing;
 using System.Text.Json.Serialization;
 
@@ -7,20 +8,35 @@ namespace PictureBoxy
     internal class Square : IFigure
     {
         [JsonInclude]
+        [Description("Pozycja x")]
         private float x;
+
         [JsonInclude]
+        [Description("Pozycja y")]
         private float y;
+
         [JsonInclude]
+        [Description("Rozmiar boku")]
         private float size;
+
         [JsonInclude]
+        [Description("Prędkość x")]
         private float vx;
+
         [JsonInclude]
+        [Description("Prędkość x")]
         private float vy;
+
         [JsonInclude]
+        [Description("Kolor czerwony (R)")]
         private int red;
+
         [JsonInclude]
+        [Description("Kolor zielony (G)")]
         private int green;
+
         [JsonInclude]
+        [Description("Kolor niebieski (B)")]
         private int blue;
 
 

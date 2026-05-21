@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Reflection;
 using System.ComponentModel;
+using System.IO;
 
 namespace PictureBoxy
 {
@@ -13,40 +14,59 @@ namespace PictureBoxy
         public void Save(object o)
         {
             Type t = o.GetType();
-            MemberInfo[] members = t.GetMembers();
+            MemberInfo[] members = t.GetMembers(BindingFlags.Public | BindingFlags.Instance | BindingFlags.NonPublic);
 
-            foreach (MemberInfo mem in members)
+            using (StreamWriter writer = new StreamWriter("zapis.txt", true))
             {
-                object[] attributes = mem.GetCustomAttributes(true);
 
-                if (attributes.Length != 0 && mem.MemberType==MemberTypes.Field)
+                writer.WriteLine("[" + t.Name + "]");
+
+                foreach (MemberInfo mem in members)
                 {
-                    string key = "";
-                    foreach (object attr in attributes)
+                    object[] attributes = mem.GetCustomAttributes(true);
+
+                    if (attributes.Length != 0 && mem.MemberType==MemberTypes.Field)
                     {
-                        DescriptionAttribute da = attr as DescriptionAttribute;
-                        if (da != null)
+                        string key = mem.Name;
+                        foreach (object attr in attributes)
                         {
-                            key = da.Description;
+                            DescriptionAttribute da = attr as DescriptionAttribute;
+                            if (da != null)
+                            {
+                                key = da.Description;
+                            }
                         }
-                    }
-                    object ob = mem.ReflectedType.GetField(mem.Name).GetValue(this);
+                        object ob = ((FieldInfo)mem).GetValue(o);
 
-                    if (ob != null)
-                    {
-                        dicField.Add(key, mem.ReflectedType.GetField(mem.Name).GetValue(this).ToString();
-                    }
-                    else
-                    {
-
+                        if (ob != null)
+                        {
+                            writer.WriteLine(key + ": " + ob.ToString());
+                        }
+                        else
+                        {
+                            writer.WriteLine(key + ": null");
+                        }
+                        writer.WriteLine();
                     }
                 }
+                writer.WriteLine();
             }
         }
 
+        public object Load(string FileName)
+        {
+            if (File.Exists(FileName))
+                return null;
+            
+
+        }
         // funkcja Save(object o)
         // Type t = o.GetType()
         // MembersInfo[] members = t.GetMembers();
+
+        //object Load(string fileName)
+        //Type t = Type.GetType(nazwa klasy)
+        //obj = Activator.CreateInstance(t)
 
     }
 }
